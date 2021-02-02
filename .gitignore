@@ -1,6 +1,7 @@
 # fitxer default MAC
 .DS_Store
 .idea/
+Laia.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
