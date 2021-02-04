@@ -29,9 +29,14 @@ def get_index_pos(list_of_elems, element):
             # Add the index position in list
             index_pos_list.append(index_pos)
             index_pos += 1
+
+            ret = index_pos_list
         except ValueError as e:
-            break
-    return index_pos_list
+            print("Exception: {}".format(e))
+            ret = False
+            #break
+
+    return ret
 
 
 ##VARIABLES
