@@ -2,7 +2,6 @@
 import os
 import itertools
 import Classes
-import Functions
 
 ##NOTE: Relative path <-- Without problems to get files beetwen differents OS
 p = os.path.dirname(__file__)  # path as p
@@ -15,7 +14,8 @@ list_ing = {}  # List containing Objects from Pizza class
 T = Classes.Teams()  # Init teams class as global variable
 P = Classes.Pizzas()
 D = Classes.Deliveries()
-C = Classes.Combis()
+#C = Classes.Combis()
+U = Classes.Unique()
 
 
 # TODO: Getting exceptions??
@@ -47,20 +47,58 @@ with open(fn) as f:
     finally:
         f.close()
 
+# Get teams information:
 #print('All teams: %s' % T.tms)
 # print('get team info: teams?? ->%s pax?? ->%s'%(T.tms['by3']['team'], T.tms['by3']['pax']))
 
 # Get list of unique ingredients:
-ingredients = set([item for sublist in P.ing for item in sublist])
+#ingredients = set([item for sublist in P.ing for item in sublist])
 #print(ingredients)
 
 # Get number of deliveries:
 D.set(T.tot_pizza, T.total_pax, T.tms.get('by2').get('teams'), T.tms.get('by3').get('teams'), T.tms.get('by4').get('teams'))
-#print(D.delis)
-C.set(P.pizzas)
-# Aquest for és només per visualitzar:
-for i in range(len(C.combis_3)):
-    print(C.combis_3[i])
+print('Total deliveris: ', D.delis)
+
+# Get list of unique pizzas based on ingredients:
+U.set(P.pizzas)
+unique = sorted(U.uni_pzs)
+unique.sort(key=len)
+
+j = 1
+i = 1
+k = 0
+combis = {}
+final2 = []
+print('Total unique pizzas: ', len(unique))
+delis_2 = 1
+
+# Get best 2 combinations:
+while j < len(unique):
+    while i < len(unique):
+        u = len(set(unique[j] + unique[i]))
+        common = (len(unique[j]) + len(unique[i])) - u
+        if common == 0:
+            combis[str(i)] = {}
+            combis[str(i)]['Pzs_id'] = sorted([len(unique)-i, len(unique)-j])
+            combis[str(i)]['Uni'] = u
+            #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
+            if len(final2) < 2:
+                final2.append(combis[str(i)])
+            else:
+                if int(final2[k].get('Uni')) > int(final2[k+1].get('Uni')):
+                    del final2[k+1]
+                else:
+                    del final2[k]
+                    #if sorted([i, j]) not in [d['Pzs_id'] for d in final2]:
+            if len(final2) == delis_2:
+                break
+
+        i = i+1
+    j = j+1
+    i = 0
+
+
+print(final2)
 
 
 
