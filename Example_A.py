@@ -5,7 +5,7 @@ import Classes
 
 ##NOTE: Relative path <-- Without problems to get files beetwen differents OS
 p = os.path.dirname(__file__)  # path as p
-fn = os.path.join(p, 'Data_Files/a_example.in')  # File Name as fn
+fn = os.path.join(p, 'Data_Files/d_many_pizzas.in')  # File Name as fn
 obj = {}  # empty global variable for containing objects in order to get all properties by line
 
 
@@ -70,9 +70,9 @@ k = 0
 combis = {}
 final2 = []
 print('Total unique pizzas: ', len(unique))
-delis_2 = 1
+delis_2 = 1696
 
-# Get best 2 combinations:
+# Get best combinations of 2:
 while j < len(unique):
     while i < len(unique):
         u = len(set(unique[j] + unique[i]))
@@ -82,23 +82,18 @@ while j < len(unique):
             combis[str(i)]['Pzs_id'] = sorted([len(unique)-i, len(unique)-j])
             combis[str(i)]['Uni'] = u
             #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
-            if len(final2) < 2:
-                final2.append(combis[str(i)])
-            else:
-                if int(final2[k].get('Uni')) > int(final2[k+1].get('Uni')):
-                    del final2[k+1]
+
+            if sorted([len(unique)-i, len(unique)-j]) not in [d['Pzs_id'] for d in final2]:
+                if len(final2) < delis_2:
+                    final2.append(combis[str(i)])
                 else:
-                    del final2[k]
-                    #if sorted([i, j]) not in [d['Pzs_id'] for d in final2]:
-            if len(final2) == delis_2:
-                break
-
+                    break
         i = i+1
-    j = j+1
+
     i = 0
+    j = j+1
 
-
-print(final2)
+print(len(final2))
 
 
 
