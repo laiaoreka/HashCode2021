@@ -27,18 +27,24 @@ class Pizzas:
     def set(self, cnt, line):
         self.pzs = {'Pizza': str(cnt-1), 'Total ingredients': line[0], 'Ingredients': sorted(line[1:len(line)])}
         self.pizzas.append(self.pzs)
-        self.ing.append(self.pzs.get('Ingredients'))
+
+    # def get_unique(self):
+    #     unique = {}
+    #     list_pzs = list(map(self.pizzas), list(map(self.pizzas)))
+    #     for d in list_pzs:
+    #         unique['Pizza'] = d['Pizza']
+    #         unique['Ingredients'] = d['Ingredients']
+    #     return unique
 
     def __init__(self):
         self.pizzas = []
-        self.ing = []
         return
 
 
 class Deliveries:
     def set(self, tot_pizza, tot_pax, by2, by3, by4):
         if int(tot_pizza) > int(tot_pax):
-            self.delis = {'Total pizzas': str(tot_pax), 'del_by2': by2, 'del_by3': by3, 'del_by4': by4}
+            self.delis = {'Total pax': str(tot_pax), 'del_by2': by2, 'del_by3': by3, 'del_by4': by4}
         else:
             self.delis = 0
 

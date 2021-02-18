@@ -51,10 +51,6 @@ with open(fn) as f:
 #print('All teams: %s' % T.tms)
 # print('get team info: teams?? ->%s pax?? ->%s'%(T.tms['by3']['team'], T.tms['by3']['pax']))
 
-# Get list of unique ingredients:
-#ingredients = set([item for sublist in P.ing for item in sublist])
-#print(ingredients)
-
 # Get number of deliveries:
 D.set(T.tot_pizza, T.total_pax, T.tms.get('by2').get('teams'), T.tms.get('by3').get('teams'), T.tms.get('by4').get('teams'))
 print('Total deliveries: ', D.delis)
@@ -70,34 +66,31 @@ k = 0
 combis = {}
 final2 = []
 print('Total unique pizzas: ', len(unique))
-print('Total de 2: ', D.delis['del_by2'])
+#print('Total de 2: ', D.delis['del_by2'])
 tot_pzs_2 = D.delis['del_by2']
 
-print(set(unique[0]) ^ set(unique[1]))
-print(len(set(unique[60514]) ^ set(unique[60513])))
+#print(set(unique[0]) ^ set(unique[1]))
+#print(len(set(unique[60514]) ^ set(unique[60513])))
 
 # Get best combinations of 2:
-while j < len(unique):
-     while i < len(unique):
-         u = len(set(unique[i]) ^ set(unique[j]))
-         common = len(set(unique[i]) | set(unique[j])) - u
-         if common == 0:
-             combis[str(i)] = {}
-             combis[str(i)]['Pzs_id'] = sorted([len(unique)-i, len(unique)-j])
-             combis[str(i)]['Uni'] = u
-             #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
+while j >= 0:
+    while i >= 0:
+        u = len(set(unique[i]) ^ set(unique[j]))
+        common = len(set(unique[i]) | set(unique[j])) - u
+        if common == 0:
+            combis[str(i)] = {}
+            combis[str(i)]['Pzs_id'] = sorted([i, j])
+            combis[str(i)]['Uni'] = u
+            #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
+            if sorted([i, j]) not in [d['Pzs_id'] for d in final2]:
+                if len(final2) < int(tot_pzs_2):
+                    final2.append(combis[str(i)])
+                else:
+                    break
+        i = i-1
 
-             if sorted([len(unique)-i, len(unique)-j]) not in [d['Pzs_id'] for d in final2]:
-                 if len(final2) < int(tot_pzs_2):
-                     final2.append(combis[str(i)])
-                 else:
-                     break
-         i = i+1
+    i = 0
+    j = j-1
 
-     i = 0
-     j = j+1
-
-
-
-
+print(final2[0])
 
