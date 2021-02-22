@@ -1,20 +1,20 @@
 # Libraries:
 import os
-import itertools
 import Classes
+import loops
+import itertools
 
 ##NOTE: Relative path <-- Without problems to get files beetwen differents OS
 p = os.path.dirname(__file__)  # path as p
-fn = os.path.join(p, 'Data_Files/d_many_pizzas.in')  # File Name as fn
+fn = os.path.join(p, 'Data_Files/a_example.in')  # File Name as fn
 obj = {}  # empty global variable for containing objects in order to get all properties by line
 
 
 ##VARIABLES
-list_ing = {}  # List containing Objects from Pizza class
+combis = {}
 T = Classes.Teams()  # Init teams class as global variable
 P = Classes.Pizzas()
 D = Classes.Deliveries()
-#C = Classes.Combis()
 U = Classes.Unique()
 
 
@@ -60,37 +60,11 @@ U.set(P.pizzas)
 unique = sorted(U.uni_pzs)
 unique.sort(key=len)
 
-j = len(unique)-1
-i = len(unique)-1
-k = 0
-combis = {}
-final2 = []
-print('Total unique pizzas: ', len(unique))
-#print('Total de 2: ', D.delis['del_by2'])
-tot_pzs_2 = D.delis['del_by2']
+unique2 = P.get_unique()
 
-#print(set(unique[0]) ^ set(unique[1]))
-#print(len(set(unique[60514]) ^ set(unique[60513])))
+print(unique)
+print([d['Pizza'] for d in unique2])
 
-# Get best combinations of 2:
-while j >= 0:
-    while i >= 0:
-        u = len(set(unique[i]) ^ set(unique[j]))
-        common = len(set(unique[i]) | set(unique[j])) - u
-        if common == 0:
-            combis[str(i)] = {}
-            combis[str(i)]['Pzs_id'] = sorted([i, j])
-            combis[str(i)]['Uni'] = u
-            #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
-            if sorted([i, j]) not in [d['Pzs_id'] for d in final2]:
-                if len(final2) < int(tot_pzs_2):
-                    final2.append(combis[str(i)])
-                else:
-                    break
-        i = i-1
 
-    i = 0
-    j = j-1
 
-print(final2[0])
 

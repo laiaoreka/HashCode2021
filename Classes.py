@@ -28,13 +28,17 @@ class Pizzas:
         self.pzs = {'Pizza': str(cnt-1), 'Total ingredients': line[0], 'Ingredients': sorted(line[1:len(line)])}
         self.pizzas.append(self.pzs)
 
-    # def get_unique(self):
-    #     unique = {}
-    #     list_pzs = list(map(self.pizzas), list(map(self.pizzas)))
-    #     for d in list_pzs:
-    #         unique['Pizza'] = d['Pizza']
-    #         unique['Ingredients'] = d['Ingredients']
-    #     return unique
+    def get_unique(self):
+        unique = []
+        list_ings = []
+        j = 0
+        for i in ([d['Ingredients'] for d in self.pizzas]):
+            if i not in list_ings:
+                list_ings.append(i)
+                unique.append(self.pizzas[j])
+            j = j+1
+        return unique
+
 
     def __init__(self):
         self.pizzas = []
