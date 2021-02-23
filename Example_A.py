@@ -1,6 +1,7 @@
 # Libraries:
 import os
-import Classes
+import Classes as c
+from itertools import permutations
 
 ##NOTE: Relative path <-- Without problems to get files beetwen differents OS
 p = os.path.dirname(__file__)  # path as p
@@ -10,10 +11,10 @@ obj = {}  # empty global variable for containing objects in order to get all pro
 
 ##VARIABLES
 list_ing = {}  # List containing Objects from Pizza class
-T = Classes.Teams()  # Init teams class as global variable
-P = Classes.Pizzas()
-D = Classes.Deliveries()
-U = Classes.Unique()
+T = c.Teams()  # Init teams class as global variable
+P = c.Pizzas()
+D = c.Deliveries()
+U = c.Unique()
 
 
 # TODO: Getting exceptions??
@@ -45,15 +46,17 @@ with open(fn) as f:
     finally:
         f.close()
 
-# Get teams information:
+# 0 - Get teams information:
 #print('All teams: %s' % T.tms)
-# print('get team info: teams?? ->%s pax?? ->%s'%(T.tms['by3']['team'], T.tms['by3']['pax']))
 
-# Get number of deliveries:
-D.set(T.tot_pizza, T.total_pax, T.tms.get('by2').get('teams'), T.tms.get('by3').get('teams'), T.tms.get('by4').get('teams'))
-print('Total deliveries: ', D.delis)
+# 1 - Get number of deliveries:
+perm = permutations([2, 3, 4])
+D.set(perm, T.tot_pizza, T.total_pax, T.tms.get('by2').get('teams'), T.tms.get('by3').get('teams'), T.tms.get('by4').get('teams'))
 
-# Get list of unique pizzas based on ingredients:
+for i in D.all_delis:
+    print(i)
+
+# 2 - Get list of unique pizzas based on ingredients:
 U.set(P.pizzas)
 unique = sorted(U.uni_pzs)
 unique.sort(key=len)
@@ -67,25 +70,7 @@ print('Total unique pizzas: ', len(unique))
 #print('Total de 2: ', D.delis['del_by2'])
 tot_pzs_2 = str(1)#D.delis['del_by2']
 
-#print(set(unique[0]) ^ set(unique[1]))
-#print(len(set(unique[60514]) ^ set(unique[60513])))
 
-# Get best combinations of 2:
-while j >= 0:
-    while i >= 0:
-        u = len(set(unique[i]) ^ set(unique[j]))
-        common = len(set(unique[i]) | set(unique[j])) - u
-        if common == 0:
-            combis[str(i)] = {}
-            combis[str(i)]['Pzs_id'] = sorted([i, j])
-            combis[str(i)]['Uni'] = u
-            #combis[str(i)]['Comb'] = [unique[len(unique)-i], unique[len(unique)-j]]
-            if sorted([i, j]) not in [d['Pzs_id'] for d in final2]:
-                if len(final2) < int(tot_pzs_2):
-                    final2.append(combis[str(i)])
-                else:
-                    break
-        i = i-1
 
-    i = 0
-    j = j-1
+
+
