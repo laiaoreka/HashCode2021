@@ -12,7 +12,7 @@ obj = {}  # empty global variable for containing objects in order to get all pro
 T = Cl.Teams()
 P = Cl.Pizzas()
 D = Cl.Deliveries()
-U = Cl.Unique()
+C = Cl.Combinations()
 
 # 0 - Get file information:
 with open(fn) as f:
@@ -46,30 +46,39 @@ with open(fn) as f:
 perm = it.permutations([2, 3, 4])
 D.set(perm, T.tot_pizza, T.total_pax, T.tms.get('by2').get('teams'), T.tms.get('by3').get('teams'), T.tms.get('by4').get('teams'))
 
-# 2 - Get list of unique pizzas based on ingredients:
-U.set(P.pizzas)
-unique = sorted(U.uni_pzs)
-unique.sort(key=len)
+# 2 - Explore all combinations:
+max_combis = []
 
-# initialize lists
-uni_comb = []
-uni_ing = []
+for i in D.all_delis:
 
-[indx, ings] = [[d['Pizza'] for d in P.pizzas], [d['Ingredients'] for d in P.pizzas]]
-permut = it.permutations(indx, 2)
+    [indx, ings] = [[d['Pizza'] for d in P.pizzas], [d['Ingredients'] for d in P.pizzas]]
 
-for comb in permut:
-    idx = sorted(list(comb))
-    if idx not in uni_comb:
-        uni_comb.append(idx)
-        ing_a = ings[int(idx[0])]
-        ing_b = ings[int(idx[1])]
-        unique = len(set(ing_a) ^ set(ing_b))
-        uni_ing.append({'Pizzas': idx, 'unique': unique})
+    a = list(i['Comb'])
+    tope2 = i['del_by2']
+    tope3 = i['del_by3']
+    tope4 = i['del_by4']
+    print(a[0], a[1], a[2])
 
-from operator import itemgetter
-newlist = sorted(uni_ing, key=itemgetter('unique'), reverse=True)
-print(newlist)
+    # 1st of combination:
+    permut0 = C.get_permut(indx, a[0])
+    combis0 = C.get_combis(list(permut0), ings, a[0])
+    [final0, indx0] = C.get_remaining(combis0, indx, a[0], tope2, tope3, tope4)
+    print('by'+str(a[0]), final0)
+
+    # 2nd of combination:
+    permut1 = C.get_permut(indx0, a[1])
+    combis1 = C.get_combis(list(permut1), ings, a[1])
+    [final1, indx1] = C.get_remaining(combis1, indx0, a[1], tope2, tope3, tope4)
+    print('by'+str(a[1]), final1)
+
+    # 3rd of combination:
+    permut2 = C.get_permut(indx1, a[2])
+    combis2 = C.get_combis(list(permut2), ings, a[2])
+    [final2, indx2] = C.get_remaining(combis2, indx1, a[2], tope2, tope3, tope4)
+    print('by' + str(a[2]), final2)
+
+
+
 
 
 
