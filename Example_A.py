@@ -109,6 +109,8 @@ best = totals.index(max(totals))
 winner = max_combis[best]
 win_info = next((item for item in D.all_delis if item['Comb'] == tuple(winner['Combinacio'])), None)
 
+print(win_info)
+
 total_deliveries = win_info['del_by2'] + win_info['del_by3'] + win_info['del_by4']
 nf.write_line(total_deliveries)
 
