@@ -60,7 +60,7 @@ for i in D.all_delis:
     tope2 = i['del_by2']
     tope3 = i['del_by3']
     tope4 = i['del_by4']
-    print(a[0], a[1], a[2])
+    #print(a[0], a[1], a[2])
 
     # 1st of combination:
     permut0 = C.get_permut(indx, a[0])
