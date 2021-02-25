@@ -97,44 +97,23 @@ class Combinations:
         self.uni_comb.clear()
 
         if num == 2:
-            for comb in permut:
-                idx = sorted(list(comb))
-                if idx not in self.uni_comb:
-                    self.uni_comb.append(idx)
-                    ing_a = ings[int(idx[0])]
-                    ing_b = ings[int(idx[1])]
-                    unique = len(set(ing_a) ^ set(ing_b))
-                    self.uni_ing2.append({'Pizzas': idx, 'unique': unique})
+            self.uni_ing2 = [[comb[0], comb[1], len(set(ings[int(comb[0])] + ings[int(comb[1])]))] for comb in permut]
+            #self.uni_ing2.append({'Pizzas': comb, 'unique': unique})
             self.uni_ing = self.uni_ing2
         elif num == 3:
-            for comb in permut:
-                idx = sorted(list(comb))
-                if idx not in self.uni_comb:
-                    self.uni_comb.append(idx)
-                    ing_a = ings[int(idx[0])]
-                    ing_b = ings[int(idx[1])]
-                    ing_c = ings[int(idx[2])]
-                    unique = len(set(ing_a) ^ set(ing_b) ^ set(ing_c))
-                    self.uni_ing3.append({'Pizzas': idx, 'unique': unique})
+            self.uni_ing3 = [[comb[0], comb[1], comb[2], len(set(ings[int(comb[0])] + ings[int(comb[1])] + ings[int(comb[2])]))] for comb in permut]
             self.uni_ing = self.uni_ing3
         elif num == 4:
-            for comb in permut:
-                idx = sorted(list(comb))
-                if idx not in self.uni_comb:
-                    self.uni_comb.append(idx)
-                    ing_a = ings[int(idx[0])]
-                    ing_b = ings[int(idx[1])]
-                    ing_c = ings[int(idx[2])]
-                    ing_d = ings[int(idx[3])]
-                    unique = len(set(ing_a) ^ set(ing_b) ^ set(ing_c) ^ set(ing_d))
-                    self.uni_ing4.append({'Pizzas': idx, 'unique': unique})
+            self.uni_ing4 = [
+                [comb[0], comb[1], comb[2], comb[3], len(set(ings[int(comb[0])] + ings[int(comb[1])] + ings[int(comb[2])] + ings[int(comb[3])]))] for
+                comb in permut]
             self.uni_ing = self.uni_ing4
 
         return self.uni_ing
 
     def get_remaining(self, combinations, indx, num, tope2, tope3, tope4):
 
-        maxtomin = sorted(combinations, key=itemgetter('unique'), reverse=True)
+        maxtomin = sorted(combinations, key=itemgetter(num), reverse=True)
 
         if num == 2:
             final = maxtomin[0:int(tope2)]
@@ -143,16 +122,20 @@ class Combinations:
         elif num == 4:
             final = maxtomin[0:int(tope4)]
 
-        b = [d['Pizzas'] for d in final]
-        c = list(it.chain.from_iterable(b))
+        pizzas = [l[:num] for l in final]
+        c = list(it.chain.from_iterable(pizzas))
         indx = list(set(indx) ^ set(c))
 
         return final, indx
 
     def get_permut(self, indx, num):
-        permut = it.permutations(indx, num)
+        permut_orig = it.permutations(indx, num)
+        permut = {self.to_sorted(i) for i in permut_orig}
 
         return permut
+
+    def to_sorted(self, t):
+        return tuple(sorted(t))
 
 
     def __init__(self):
