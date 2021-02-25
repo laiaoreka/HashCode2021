@@ -1,4 +1,7 @@
 # HashCode2021
 ```
-code type
+To improve:
+    1) Take into account all possibilities
+    2) Efficiency
+
 ```
