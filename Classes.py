@@ -91,6 +91,11 @@ class Deliveries:
 class Combinations:
     def get_combis(self, permut, ings, num):
 
+        self.uni_ing2.clear()
+        self.uni_ing3.clear()
+        self.uni_ing4.clear()
+        self.uni_comb.clear()
+
         if num == 2:
             for comb in permut:
                 idx = sorted(list(comb))

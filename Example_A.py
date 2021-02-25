@@ -2,11 +2,14 @@
 import os
 import Classes as Cl
 import itertools as it
+from write_results import newFile
 
 # Relative path <-- Without problems to get files beetwen differents OS
 p = os.path.dirname(__file__)  # path as p
 fn = os.path.join(p, 'Data_Files/a_example.in')  # File Name as fn
 obj = {}  # empty global variable for containing objects in order to get all properties by line
+
+nf = newFile('A.txt')
 
 # Class objects initializations
 T = Cl.Teams()
@@ -57,26 +60,56 @@ for i in D.all_delis:
     tope2 = i['del_by2']
     tope3 = i['del_by3']
     tope4 = i['del_by4']
-    print(a[0], a[1], a[2])
+    #print(a[0], a[1], a[2])
 
     # 1st of combination:
     permut0 = C.get_permut(indx, a[0])
     combis0 = C.get_combis(list(permut0), ings, a[0])
     [final0, indx0] = C.get_remaining(combis0, indx, a[0], tope2, tope3, tope4)
-    print('by'+str(a[0]), final0)
+    #print('by'+str(a[0]), final0)
 
     # 2nd of combination:
     permut1 = C.get_permut(indx0, a[1])
     combis1 = C.get_combis(list(permut1), ings, a[1])
     [final1, indx1] = C.get_remaining(combis1, indx0, a[1], tope2, tope3, tope4)
-    print('by'+str(a[1]), final1)
+    #print('by'+str(a[1]), final1)
 
     # 3rd of combination:
     permut2 = C.get_permut(indx1, a[2])
     combis2 = C.get_combis(list(permut2), ings, a[2])
     [final2, indx2] = C.get_remaining(combis2, indx1, a[2], tope2, tope3, tope4)
-    print('by' + str(a[2]), final2)
+    #print('by' + str(a[2]), final2)
 
+    tot0 = [d['unique'] for d in final0]
+    tot1 = [d['unique'] for d in final1]
+    tot2 = [d['unique'] for d in final2]
+    tot_punts = sum(tot0) + sum(tot1) + sum(tot2)
+    #print(tot_punts)
+
+    max_combis.append({'Combinacio': a, 'by'+str(a[0]): [d['Pizzas'] for d in final0], 'by'+str(a[1]): [d['Pizzas'] for d in final1], 'by'+str(a[2]): [d['Pizzas'] for d in final2], 'Tot_punts': tot_punts})
+
+totals = [d['Tot_punts'] for d in max_combis]
+best = totals.index(max(totals))
+winner = max_combis[best]
+win_info = next((item for item in D.all_delis if item['Comb'] == tuple(winner['Combinacio'])), None)
+
+total_deliveries = win_info['del_by2'] + win_info['del_by3'] + win_info['del_by4']
+nf.write_line(total_deliveries)
+
+for i in winner['by2']:
+    a = ' '.join(i)
+    b = '2 '+a
+    nf.write_line(b)
+
+for i in winner['by3']:
+    a = ' '.join(i)
+    b = '3 '+a
+    nf.write_line(b)
+
+for i in winner['by4']:
+    a = ' '.join(i)
+    b = '4 '+a
+    nf.write_line(b)
 
 
 
