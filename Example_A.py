@@ -105,11 +105,10 @@ for i in D.all_delis:
     max_combis.append({'Combinacio': a, 'by'+str(a[0]): [l[:a[0]] for l in final0], 'by'+str(a[1]): [l[:a[1]] for l in final1], 'by'+str(a[2]): [l[:a[2]] for l in final2], 'Tot_punts': tot_punts})
 
 totals = [d['Tot_punts'] for d in max_combis]
+
 best = totals.index(max(totals))
 winner = max_combis[best]
 win_info = next((item for item in D.all_delis if item['Comb'] == tuple(winner['Combinacio'])), None)
-
-print(win_info)
 
 total_deliveries = win_info['del_by2'] + win_info['del_by3'] + win_info['del_by4']
 nf.write_line(total_deliveries)

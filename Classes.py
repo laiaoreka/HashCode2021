@@ -113,18 +113,26 @@ class Combinations:
 
     def get_remaining(self, combinations, indx, num, tope2, tope3, tope4):
 
-        maxtomin = sorted(combinations, key=itemgetter(num), reverse=True)
+        self.maxtomin = sorted(combinations, key=itemgetter(num), reverse=True)
+        self.all_vals = [l[num] for l in self.maxtomin]
+        if self.maxtomin == []:
+            self.best_options = []
+        else:
+            self.highest = max(self.all_vals)
+            self.best_options = [i for i, val in enumerate(self.all_vals) if val == self.highest]
 
         if num == 2:
-            final = maxtomin[0:int(tope2)]
+            final = [self.maxtomin[a] for a in self.best_options]
         elif num == 3:
-            final = maxtomin[0:int(tope3)]
+            final = [self.maxtomin[a] for a in self.best_options]
         elif num == 4:
-            final = maxtomin[0:int(tope4)]
+            final = [self.maxtomin[a] for a in self.best_options]
 
         pizzas = [l[:num] for l in final]
         c = list(it.chain.from_iterable(pizzas))
         indx = list(set(indx) ^ set(c))
+
+        print('pizzas', pizzas, 'final', final, 'indexes', indx)
 
         return final, indx
 
